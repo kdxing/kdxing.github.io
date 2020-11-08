@@ -1,150 +1,242 @@
 <!DOCTYPE html>
-<meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
 <html>
-	<head>
-		<title>小可爱丹丹生日快乐，永远爱你！</title>
-		<style>
-		body	{
-			background-color : #ffceed;
-		}
-		@keyframes heartfade {
-			0% {
-				opacity : 1;
-			}
-			50% {
-				opacity : 0;
-			}
-		}
-		.heart {
-			z-index : 999;
-			animation : heartfade 6s linear;
-			position : absolute; 
-		}
-		.heart:before,
-		.heart:after {
-			content : "";
-			background-color : #fc2a62;
-			position : absolute;
-			height : 30px;
-			width : 45px;
-			border-radius : 15px 0px 0px 15px;
-		}
+<meta name="viewport" content="width = device-width, initial-scale = 1.0">
+<style>
+body {
+  font-family: Arial;
+  margin: 0;
+}
 
-		.heart:before {
-			transform : rotate(45deg);
-		}
+* {
+  box-sizing: border-box;
+}
 
-		.heart:after {
-			left : 10.5px;
-			transform : rotate(135deg);
-		}
-		</style>
-	</head>
-	<body>
-		
-	</body>
-	<script>
-		
-		var brd = document.createElement("DIV");
-		document.body.insertBefore(brd, document.getElementById("board"));
+img {
+  vertical-align: middle;
+}
 
-		const duration = 3000;
-		const speed = 0.5;
-		const cursorXOffset = 0;
-		const cursorYOffset = -5;
+/* Position the image container (needed to position the left and right arrows) */
+.container {
+  position: relative;
+}
 
-		var hearts = [];
-		
-		function generateHeart(x, y, xBound, xStart, scale)
-		{
-			var heart = document.createElement("DIV");
-			heart.setAttribute('class', 'heart');
-			brd.appendChild(heart);
-			heart.time = duration;
-			heart.x = x;
-			heart.y = y;
-			heart.bound = xBound;
-			heart.direction = xStart;
-			heart.style.left = heart.x + "px";
-			heart.style.top = heart.y + "px";
-			heart.scale = scale;
-			heart.style.transform = "scale(" + scale + "," + scale + ")";
-			if(hearts == null)
-				hearts = [];
-			hearts.push(heart);
-			return heart;
-		}
+/* Hide the images by default */
+.mySlides {
+  display: none;
+}
 
-		var down = false;
-		var event = null;
+/* Add a pointer when hovering over the thumbnail images */
+.cursor {
+  cursor: pointer;
+}
 
-		document.onmousedown = function(e) {
-			down = true;
-			event = e;
-		}
+/* Next & previous buttons */
+.prev,
+.next {
+  cursor: pointer;
+  position: absolute;
+  top: 40%;
+  width: auto;
+  padding: 16px;
+  margin-top: -50px;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
 
-		document.onmouseup = function(e) {
-			down = false;
-		}
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
 
-		document.onmousemove = function(e) {
-			event = e;
-		}
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover,
+.next:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
 
-		document.ontouchstart = function(e) {
-			down = true;
-			event = e.touches[0];
-		}
+/* Number text (1/3 etc) */
+.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
 
-		document.ontouchend = function(e) {
-			down = false;
-		}
+/* Container for image text */
+.caption-container {
+  text-align: center;
+  background-color: #222;
+  padding: 2px 16px;
+  color: white;
+}
 
-		document.ontouchmove = function(e) {
-			event = e.touches[0];
-		}
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
 
-		var before = Date.now();
-		var id = setInterval(frame, 5);
-		var gr = setInterval(check, 100);
+/* Six columns side by side */
+.column {
+  float: left;
+  width: 16.66%;
+}
 
-		function frame()
-		{
-			var current = Date.now();
-			var deltaTime = current - before;
-			before = current;
-			for(i in hearts)
-			{
-				var heart = hearts[i];
-				heart.time -= deltaTime;
-				if(heart.time > 0)
-				{
-					heart.y -= speed;
-					heart.style.top = heart.y + "px";
-					heart.style.left = heart.x + heart.direction * heart.bound * Math.sin(heart.y * heart.scale / 30) / heart.y * 200 + "px";
-				}
-				else
-				{
-					heart.parentNode.removeChild(heart);
-					hearts.splice(i, 1);
-				}
-			}
-		}
+/* Add a transparency effect for thumnbail images */
+.demo {
+  opacity: 0.6;
+}
 
-		function check()
-		{
-			if(down)
-			{
-				var start = 1 - Math.round(Math.random()) * 2;
-				var scale = Math.random() * Math.random() * 0.8 + 0.2;
-				var bound = 30 + Math.random() * 20;
-				generateHeart(event.pageX - brd.offsetLeft + cursorXOffset, event.pageY - brd.offsetTop + cursorYOffset, bound, start, scale);
-			}
-		}
+.active,
+.demo:hover {
+  opacity: 1;
+}
+</style>
+<body>
 
-	</script>
-	<audio controls autoplay> 
-  		<source src="love.mp3" type="audio/mpeg">
- 	 Your browser does not support the audio element.
-	</audio>
+<!-- <h2 style="text-align:center">Slideshow Gallery</h2> -->
+
+<div class="container">
+  <div class="mySlides">
+    <div class="numbertext">1 / 12</div>
+    <img src="./img/IMG_20190913_173056.jpg" style="width: 100%;">
+  </div>
+
+  <div class="mySlides">
+    <div class="numbertext">2 / 12</div>
+    <img src="./img/IMG_20191027_135540.jpg" style="width: 100%;">
+  </div>
+
+  <div class="mySlides">
+    <div class="numbertext">3 / 12</div>
+    <img src="./img/IMG_20191101_190112_498.jpg" style="width: 100%;">
+  </div>
+    
+  <div class="mySlides">
+    <div class="numbertext">4 / 12</div>
+    <img src="./img/IMG_20191109_193800.jpg" style="width: 100%;">
+  </div>
+
+  <div class="mySlides">
+    <div class="numbertext">5 / 12</div>
+    <img src="./img/IMG_20191109_201117.jpg" style="width: 100%;">
+  </div>
+    
+  <div class="mySlides">
+    <div class="numbertext">6 / 12</div>
+    <img src="./img/IMG_20191116_221246.jpg" style="width: 100%;">
+  </div>
+  <div class="mySlides">
+    <div class="numbertext">7 / 12</div>
+    <img src="./img/IMG_20191208_151419_1.jpg" style="width: 100%;">
+  </div>    
+  <div class="mySlides">
+    <div class="numbertext">8 / 12</div>
+    <img src="./img/IMG_20200627_130838.jpg" style="width: 100%;">
+  </div>    
+  <div class="mySlides">
+    <div class="numbertext">9 / 12</div>
+    <img src="./img/IMG_20201005_191100_2.jpg" style="width: 100%;">
+  </div>   
+  <div class="mySlides">
+    <div class="numbertext">10 / 12</div>
+    <img src="./img/IMG_20201006_210545.jpg" style="width: 100%;">
+  </div>   
+  <div class="mySlides">
+    <div class="numbertext">11 / 12</div>
+    <img src="./img/IMG_20201007_141030.jpg" style="width: 100%;">
+  </div>   
+  <div class="mySlides">
+    <div class="numbertext">12 / 12</div>
+    <img src="./img/IMG_20201101_180419.jpg" style="width: 100%;">
+  </div>   
+
+
+  <a class="prev" onclick="plusSlides(-1)">❮</a>
+  <a class="next" onclick="plusSlides(1)">❯</a>
+
+  <div class="caption-container">
+    <p id="caption"></p>
+  </div>
+
+  <div class="row">
+    <div class="column">
+      <img class="demo cursor" src="img/IMG_20190913_173056.jpg" style="width:100%" onclick="currentSlide(1)" alt="研祥古寺我们第一次旅行，你胖我胖">
+    </div>
+    <div class="column">
+      <img class="demo cursor" src="img/IMG_20191027_135540.jpg" style="width:100%" onclick="currentSlide(2)" alt="日常周末大大棉花糖，开心">
+    </div>
+    <div class="column">
+      <img class="demo cursor" src="img/IMG_20191101_190112_498.jpg" style="width:100%" onclick="currentSlide(3)" alt="万圣节小兔几">
+    </div>
+    <div class="column">
+      <img class="demo cursor" src="img/IMG_20191109_193800.jpg" style="width:100%" onclick="currentSlide(4)" alt="19年生日快乐，屋里抱抱">
+    </div>
+    <div class="column">
+      <img class="demo cursor" src="img/IMG_20191109_201117.jpg" style="width:100%" onclick="currentSlide(5)" alt="19年生日快乐，阳台抱抱">
+    </div>
+
+    <div class="column">
+      <img class="demo cursor" src="img/IMG_20191116_221246.jpg" style="width:100%" onclick="currentSlide(6)" alt="音乐剧红与黑，当个贫穷致富的于连">
+    </div>    
+
+    <div class="column">
+      <img class="demo cursor" src="img/IMG_20191208_151419_1.jpg" style="width:100%" onclick="currentSlide(7)" alt="当个龙猫给你取暖">
+    </div>  
+    <div class="column">
+      <img class="demo cursor" src="img/IMG_20200627_130838.jpg" style="width:100%" onclick="currentSlide(8)" alt="广州旅游之暴晒陪我回母校">
+    </div>
+    <div class="column">
+      <img class="demo cursor" src="img/IMG_20201005_191100_2.jpg" style="width:100%" onclick="currentSlide(9)" alt="国庆之西湖边上生气，吃个鸡腿就消气">
+    </div>
+    <div class="column">
+      <img class="demo cursor" src="img/IMG_20201006_210545.jpg" style="width:100%" onclick="currentSlide(10)" alt="看看新公司阿里，赚钱娶你">
+    </div>
+    <div class="column">
+      <img class="demo cursor" src="img/IMG_20201007_141030.jpg" style="width:100%" onclick="currentSlide(11)" alt="国庆之船游西湖">
+    </div>
+    <div class="column">
+      <img class="demo cursor" src="img/IMG_20201101_180419.jpg" style="width:100%" onclick="currentSlide(12)" alt="来杭探亲">
+    </div>
+  </div>
+</div>
+
+<script>
+var slideIndex = 1;
+showSlides(slideIndex);
+
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  var i;
+  var slides = document.getElementsByClassName("mySlides");
+  var dots = document.getElementsByClassName("demo");
+  var captionText = document.getElementById("caption");
+  if (n > slides.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+  }
+  for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+  }
+  slides[slideIndex-1].style.display = "block";
+  dots[slideIndex-1].className += " active";
+  captionText.innerHTML = dots[slideIndex-1].alt;
+}
+</script>
+    
+</body>
 </html>
